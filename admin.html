@@ -90,7 +90,9 @@ form.addEventListener('submit', (e) => {
   }
 
   let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
-  VENDEDORES[cpf] = {nome, zap, fotoGrande, fotoBolinha, cpf};
+  // Gera link automático do vendedor
+  const linkVendedor = `${window.location.origin}/site_vendedor.html?vendedor=${cpf}`;
+  VENDEDORES[cpf] = {nome, zap, fotoGrande, fotoBolinha, cpf, linkVendedor};
   localStorage.setItem('VendedoresSiteHonda', JSON.stringify(VENDEDORES));
 
   document.getElementById('msgSucesso').style.display = 'block';
@@ -111,6 +113,7 @@ function atualizarLista() {
     div.className = 'vendedorItem';
     div.innerHTML = `
       <strong>${v.nome}</strong> | WhatsApp: ${v.zap} <br>
+      Link do site: <a href="${v.linkVendedor}" target="_blank">${v.linkVendedor}</a><br>
       <button onclick="excluirVendedor('${cpf}')">Excluir vendedor</button>
       <button onclick="excluirSite('${cpf}')">Excluir site do vendedor</button>
     `;
@@ -132,9 +135,11 @@ function excluirVendedor(cpf) {
 function excluirSite(cpf) {
   let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
   if(confirm(`Deseja realmente excluir o site do vendedor ${VENDEDORES[cpf].nome}?`)){
-    delete VENDEDORES[cpf];
+    // Limpa fotos e dados, mas mantém cadastro
+    VENDEDORES[cpf].fotoGrande = '';
+    VENDEDORES[cpf].fotoBolinha = '';
+    VENDEDORES[cpf].linkVendedor = '';
     localStorage.setItem('VendedoresSiteHonda', JSON.stringify(VENDEDORES));
-    // aqui você pode adicionar mais ações para apagar dados reais do site
     alert('Site do vendedor excluído!');
     atualizarLista();
   }
