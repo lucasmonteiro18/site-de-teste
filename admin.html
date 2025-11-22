@@ -1,56 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Painel Admin - Cadastrar Vendedor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel Admin — Honda Revemar</title>
 <style>
-body{font-family:Arial;padding:20px;background:#f7f7f7}
-.box{max-width:600px;margin:20px auto;background:#fff;padding:18px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ddd}
-button{padding:12px 16px;background:#25D366;color:#fff;border:0;border-radius:8px;font-weight:700;cursor:pointer}
-.small{font-size:13px;color:#666}
+body {font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px;}
+h1 {color: #c8102e;}
+label {display:block;margin:12px 0 4px;}
+input {width:100%; padding:8px; margin-bottom:12px; border-radius:6px; border:1px solid #ccc;}
+button {padding:8px 12px; border:none; border-radius:6px; background:#c8102e; color:#fff; font-weight:700; cursor:pointer; margin-right:5px;}
+.success {color:green;margin-top:10px;}
+#errorLogin {color:red;margin-bottom:12px;}
+.vendedorItem {margin-bottom:10px; padding:10px; background:#fff; border-radius:6px; box-shadow:0 0 5px #ccc;}
 </style>
 </head>
 <body>
-<div class="box">
-  <h2>Painel Admin - Cadastrar Vendedor</h2>
-  <p class="small">Preencha e clique em salvar. O cadastro fica salvo no navegador (localStorage).</p>
 
-  <label>Nome</label>
-  <input id="nomeVend">
+<div id="loginDiv">
+  <h1>Login Admin</h1>
+  <div id="errorLogin" style="display:none;">Usuário ou senha incorretos!</div>
+  <label>Usuário:</label>
+  <input type="text" id="loginUser" placeholder="Usuário" required>
+  <label>Senha:</label>
+  <input type="password" id="loginPass" placeholder="Senha" required>
+  <button id="btnLogin">Entrar</button>
+</div>
 
-  <label>CPF (somente números)</label>
-  <input id="cpfVend">
+<div id="formDiv" style="display:none;">
+  <h1>Cadastro do Vendedor</h1>
+  <form id="formVendedor">
+    <label>Nome do vendedor:</label>
+    <input type="text" id="nome" placeholder="Lucas Honda" required>
 
-  <label>WhatsApp (somente números, exemplo 5594...)</label>
-  <input id="zapVend">
+```
+<label>WhatsApp (somente números):</label>
+<input type="text" id="zap" placeholder="559492781498" required>
 
-  <label>URL da foto (opcional)</label>
-  <input id="fotoVend">
+<label>URL da foto grande (início da página):</label>
+<input type="text" id="fotoGrande" placeholder="https://site.com/foto_grande.jpg" required>
 
-  <button onclick="salvarVendedor()">Salvar vendedor</button>
+<label>URL da foto bolinha “Estou online”:</label>
+<input type="text" id="fotoBolinha" placeholder="https://site.com/foto_bolinha.jpg" required>
 
-  <div id="msg" style="margin-top:12px"></div>
+<label>CPF do vendedor:</label>
+<input type="text" id="cpf" placeholder="99999999999" required>
+
+<button type="submit">Salvar vendedor</button>
+<div class="success" id="msgSucesso" style="display:none;">Vendedor salvo com sucesso!</div>
+```
+
+  </form>
+
+  <h2 style="margin-top:30px;">Vendedores cadastrados</h2>
+  <div id="listaVendedores"></div>
 </div>
 
 <script>
-let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
+// Login simples
+const btnLogin = document.getElementById('btnLogin');
+btnLogin.addEventListener('click', () => {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  
+  if(user === 'lucasdbr15' && pass === '100%Deus'){
+    document.getElementById('loginDiv').style.display = 'none';
+    document.getElementById('formDiv').style.display = 'block';
+    atualizarLista();
+  } else {
+    document.getElementById('errorLogin').style.display = 'block';
+  }
+});
 
-function salvarVendedor(){
-  const nome = document.getElementById('nomeVend').value.trim();
-  const cpf = document.getElementById('cpfVend').value.replace(/\D/g,'').trim();
-  const zap = document.getElementById('zapVend').value.replace(/\D/g,'').trim();
-  const foto = document.getElementById('fotoVend').value.trim();
+// salvar vendedor
+const form = document.getElementById('formVendedor');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-  if(!nome || !cpf || !zap){ alert('Preencha nome, cpf e zap'); return; }
+  const nome = document.getElementById('nome').value.trim();
+  const zap = document.getElementById('zap').value.trim();
+  const fotoGrande = document.getElementById('fotoGrande').value.trim();
+  const fotoBolinha = document.getElementById('fotoBolinha').value.trim();
+  const cpf = document.getElementById('cpf').value.trim();
 
-  VENDEDORES[cpf] = { nome, cpf, zap, foto };
+  if(!nome || !zap || !fotoGrande || !fotoBolinha || !cpf){
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
+  VENDEDORES[cpf] = {nome, zap, fotoGrande, fotoBolinha, cpf};
   localStorage.setItem('VendedoresSiteHonda', JSON.stringify(VENDEDORES));
 
-  const link = location.origin + location.pathname.replace(/[^/]*$/, '') + 'index.html?vendedor=' + cpf;
-  // se seu site principal tem outro nome (ex site.html), troque index.html pelo nome correto.
-  document.getElementById('msg').innerHTML = "<strong>Vendedor salvo.</strong><br>Link para o vendedor (envie a ele):<br><input style='width:100%;padding:8px;' value='"+link+"' readonly>";
+  document.getElementById('msgSucesso').style.display = 'block';
+  setTimeout(()=>document.getElementById('msgSucesso').style.display='none', 3000);
+
+  form.reset();
+  atualizarLista();
+});
+
+// atualizar lista de vendedores
+function atualizarLista() {
+  let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
+  let listaDiv = document.getElementById('listaVendedores');
+  listaDiv.innerHTML = '';
+  for(let cpf in VENDEDORES){
+    let v = VENDEDORES[cpf];
+    let div = document.createElement('div');
+    div.className = 'vendedorItem';
+    div.innerHTML = `
+      <strong>${v.nome}</strong> | WhatsApp: ${v.zap} <br>
+      <button onclick="excluirVendedor('${cpf}')">Excluir vendedor</button>
+      <button onclick="excluirSite('${cpf}')">Excluir site do vendedor</button>
+    `;
+    listaDiv.appendChild(div);
+  }
+}
+
+// excluir vendedor do cadastro
+function excluirVendedor(cpf) {
+  let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
+  if(confirm(`Deseja realmente excluir ${VENDEDORES[cpf].nome}?`)){
+    delete VENDEDORES[cpf];
+    localStorage.setItem('VendedoresSiteHonda', JSON.stringify(VENDEDORES));
+    atualizarLista();
+  }
+}
+
+// excluir site do vendedor (apagar dados e fotos)
+function excluirSite(cpf) {
+  let VENDEDORES = JSON.parse(localStorage.getItem('VendedoresSiteHonda') || "{}");
+  if(confirm(`Deseja realmente excluir o site do vendedor ${VENDEDORES[cpf].nome}?`)){
+    delete VENDEDORES[cpf];
+    localStorage.setItem('VendedoresSiteHonda', JSON.stringify(VENDEDORES));
+    // aqui você pode adicionar mais ações para apagar dados reais do site
+    alert('Site do vendedor excluído!');
+    atualizarLista();
+  }
 }
 </script>
+
 </body>
 </html>
