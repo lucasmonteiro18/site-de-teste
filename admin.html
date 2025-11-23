@@ -67,9 +67,10 @@ function loginAdm(){
   }
 }
 
-// BANCO LOCAL
+// CARREGAR BANCO
 let VENDEDORES = JSON.parse(localStorage.getItem("DB_HONDA") || "{}");
 
+// SALVAR
 function salvarVendedor(){
   const nome = nomeVend.value.trim();
   const cpf = cpfVend.value.trim();
@@ -95,6 +96,7 @@ function salvarVendedor(){
   msg.innerHTML = `<strong>Vendedor salvo!</strong><br>Link:<br><input style='width:100%;padding:8px' value='${linkVendedor}' readonly>`;
 }
 
+// LISTA
 function atualizarLista(){
   listaVend.innerHTML = "";
 
@@ -121,12 +123,14 @@ function atualizarLista(){
   }
 }
 
+// EXCLUIR
 function excluirVend(cpf){
   delete VENDEDORES[cpf];
   localStorage.setItem("DB_HONDA", JSON.stringify(VENDEDORES));
   atualizarLista();
 }
 
+// ATIVAR/DESATIVAR
 function toggleStatus(cpf){
   VENDEDORES[cpf].ativo = !VENDEDORES[cpf].ativo;
   localStorage.setItem("DB_HONDA", JSON.stringify(VENDEDORES));
