@@ -185,14 +185,34 @@
 
 <script>
     // --- LISTA DE MOTOS ---
-    const motos = [
-      { id:'BIZ125ES', nome:'BIZ 125 ES', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp' },
-      { id:'BIZ125EX', nome:'BIZ 125 EX', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp' },
-      { id:'CG160START', nome:'CG160START', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp' }
-      { id:'CG160FAN', nome:'CG 160 FAN', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp' }
+   const motos = [
+  { id:'BIZ125ES', nome:'BIZ 125 ES', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp', img2:'', img3:'' },
+  { id:'BIZ125EX', nome:'BIZ 125 EX', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp', img2:'', img3:'' },
+  { id:'CG160START', nome:'CG 160 START', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp', img2:'', img3:'' },
+  { id:'CG160FAN', nome:'CG 160 FAN', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp', img2:'', img3:'' },
+  { id:'CG160TITAN', nome:'CG 160 TITAN', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp', img2:'', img3:'' },
+  { id:'CB300FTWABS', nome:'CB 300F TWISTER ABS', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-azul.webp', img2:'', img3:'' },
+  { id:'CB300FTWCBS', nome:'CB 300F TWISTER CBS', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-cinza.webp', img2:'', img3:'' },
+  { id:'NXR160BRS', nome:'NXR 160 BROS CBS', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-CBS-Azul-Universe-Blue.webp', img2:'', img3:'' },
+  { id:'NXR160ABS', nome:'NXR 160 BROS ABS', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-ABS-Vermelho-Fighting-Red.webp', img2:'', img3:'' },
+  { id:'XRE190', nome:'XRE 190', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/xre-190-azul.webp', img2:'', img3:'' },
+  { id:'SAHARA300ABS', nome:'SAHARA 300 ABS', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Cinza-Met%C3%A1lico.webp', img2:'', img3:'' },
+  { id:'SAHARA300RALLY', nome:'SAHARA 300 RALLY', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Rally-Vermelho-Victory-Red.webp', img2:'', img3:'' },
+  { id:'SAHARA300ADV', nome:'SAHARA 300 ADV', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Adventure-Bege%20Met%C3%A1lico.webp', img2:'', img3:'' },
+  { id:'XR300LT', nome:'XR 300L TORNADO', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/XR-300L-Tornado.webp', img2:'', img3:'' },
+  { id:'PCX', nome:'PCX CBS', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/imagem-home-honda-pcx-branco_0.webp', img2:'', img3:'' },
+  { id:'PCXABS', nome:'PCX ABS', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-pcx-azul.webp', img2:'', img3:'' },
+  { id:'HONADA_ADV', nome:'Honda ADV', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-ADV-Prata-Met%C3%A1lico_0.webp', img2:'', img3:'' },
+  { id:'ELITE125', nome:'Elite 125', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Elite-125-Vermelho-Maceio-Red_0.webp', img2:'', img3:'' },
+  { id:'POP110', nome:'POP 110i ES +10', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Pop-110i-Es-Vermelho-Fighting-Red_0.webp', img2:'', img3:'' },
+  { id:'CRF300F', nome:'CRF 300F', img1:'https://www.motopel.com.br/site/wp-content/uploads/2025/08/capa-crf-300f.webp', img2:'', img3:'' },
+  { id:'CB500HOR', nome:'CB 500 HORNET', img1:'https://www.motopel.com.br/site/wp-content/uploads/2025/07/capa-hornet-500-2026-branca.webp', img2:'', img3:'' },
+  { id:'CB500X', nome:'CB 500X', img1:'https://www.motopel.com.br/site/wp-content/uploads/2025/07/capa-nx-500-2026-vermelha.webp', img2:'', img3:'' },
+  { id:'NC750X', nome:'NC 750X', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/nc-750x-MT-prata.png.webp', img2:'', img3:'' },
+  { id:'CB1000R70', nome:'CB 1000R 70%', img1:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-1000R-black-edition.png.webp', img2:'', img3:'' },
+  { id:'CRF1100L', nome:'CRF 1100L AFRICA TWIN 70%', img1:'https://www.motopel.com.br/site/wp-content/uploads/2020/02/capa-africa-twin-mt.webp', img2:'', img3:'' }
+];
 
-    
-    ];
 
     // --- PEGAR MOTO DA URL ---
     const params = new URLSearchParams(window.location.search);
