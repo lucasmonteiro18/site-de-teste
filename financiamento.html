@@ -3,9 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Simular Financiamento</title>
-
 <style>
     body{
         margin:0;
@@ -14,12 +12,10 @@
         padding:20px;
         animation: fadeIn .6s ease-in-out;
     }
-
     @keyframes fadeIn{
         from{opacity:0; transform:translateY(12px);}
         to{opacity:1; transform:translateY(0);}
     }
-
     .card{
         background:white;
         padding:18px;
@@ -28,23 +24,19 @@
         margin-bottom:20px;
         animation: pop .5s ease;
     }
-
     @keyframes pop{
         from{transform:scale(.96); opacity:0;}
         to{transform:scale(1); opacity:1;}
     }
-
     h2{
         margin:0 0 10px;
         font-size:22px;
     }
-
     label{
         font-weight:600;
         margin-top:12px;
         display:block;
     }
-
     input, select{
         width:100%;
         padding:12px;
@@ -55,13 +47,11 @@
         background:#fafafa;
         transition:0.2s;
     }
-
     input:focus, select:focus{
         border-color:#c8102e;
         background:white;
         box-shadow:0 0 6px rgba(200,16,46,0.3);
     }
-
     button{
         width:100%;
         padding:14px;
@@ -76,12 +66,10 @@
         transition:.25s;
         animation: pop .5s ease;
     }
-
     button:active{
         transform:scale(0.96);
         background:#a00b23;
     }
-
     .moto-name{
         font-weight:800;
         font-size:19px;
@@ -89,86 +77,74 @@
         color:#c8102e;
         text-align:center;
     }
+
+    .carousel {
+        width:100%;
+        height:220px;
+        overflow:hidden;
+        border-radius:12px;
+        margin-bottom:15px;
+        position:relative;
+    }
+    .carousel-track {
+        display:flex;
+        width:max-content;
+        animation: scroll 18s linear infinite;
+    }
+    .carousel-track img {
+        width:100%;
+        height:220px;
+        object-fit:cover;
+        cursor: pointer;
+        transition:.3s;
+    }
+    .carousel-track img:hover {
+        transform:scale(1.03);
+    }
+    @keyframes scroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    #zoomView {
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.85);
+        display:none;
+        justify-content:center;
+        align-items:center;
+        z-index:9999;
+    }
+    #zoomView img {
+        width:90%;
+        max-width:480px;
+        border-radius:12px;
+    }
 </style>
 </head>
-
 <body>
+
 <div class="card">
     <h2 id="tituloMoto">Carregando...</h2>
 
-   <!-- CARROSSEL NOVO -->
-<div class="carousel">
-    <div class="carousel-track" id="carouselTrack"></div>
+    <!-- CARROSSEL -->
+    <div class="carousel">
+        <div class="carousel-track" id="carouselTrack"></div>
+    </div>
+
+    <!-- ZOOM VIEW -->
+    <div id="zoomView" onclick="this.style.display='none'">
+        <img id="zoomImg">
+    </div>
 </div>
-
-<!-- ZOOM VIEW -->
-<div id="zoomView" onclick="this.style.display='none'">
-    <img id="zoomImg">
-</div>
- 
-
-<style>
-.carousel {
-    width:100%;
-    height:220px;
-    overflow:hidden;
-    border-radius:12px;
-    margin-bottom:15px;
-    position:relative;
-}
-
-.carousel-track {
-    display:flex;
-    width:max-content;
-    animation: scroll 18s linear infinite;
-}
-
-.carousel-track img {
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    cursor: pointer;
-    transition:.3s;
-}
-
-.carousel-track img:hover {
-    transform:scale(1.03);
-}
-
-/* loop infinito real */
-@keyframes scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* fundo escuro do zoom */
-#zoomView {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.85);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
-
-#zoomView img {
-    width:90%;
-    max-width:480px;
-    border-radius:12px;
-}
-</style>
-
 
 <div class="card">
     <h2>Simulação de Financiamento</h2>
     <p class="moto-name" id="motoEscolhida">Carregando...</p>
 
     <form id="finForm">
-
         <label>Nome completo *</label>
         <input name="nome" required placeholder="Ex: João da Silva">
 
@@ -208,75 +184,45 @@
 </div>
 
 <script>
-    // pega a moto pela URL
+    // --- LISTA DE MOTOS ---
+    const motos = [
+      { id:'BIZ125ES', nome:'BIZ 125 ES', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp' },
+      { id:'BIZ125EX', nome:'BIZ 125 EX', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp' },
+      { id:'CG160FAN', nome:'CG 160 FAN', img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp' }
+      // adicione aqui as outras motos
+    ];
+
+    // --- PEGA MOTO ESCOLHIDA NA URL ---
     const params = new URLSearchParams(window.location.search);
-    const moto = params.get("moto") || "Moto não informada";
+    const motoId = params.get("moto") || null;
+    const motoSelecionada = motos.find(m => m.id === motoId) || motos[0];
 
-    document.getElementById("motoEscolhida").innerText = moto;
-    document.getElementById("motoInput").value = moto;
+    // atualiza título e formulário
+    document.getElementById("tituloMoto").innerText = motoSelecionada.nome;
+    document.getElementById("motoEscolhida").innerText = motoSelecionada.nome;
+    document.getElementById("motoInput").value = motoSelecionada.nome;
 
+    // --- CRIA IMAGENS DO CARROSSEL ---
+    let imagensMoto = [motoSelecionada.img, motoSelecionada.img, motoSelecionada.img];
+    let track = document.getElementById("carouselTrack");
+    let imgsLoop = [...imagensMoto, ...imagensMoto];
+
+    track.innerHTML = imgsLoop.map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`).join("");
+
+    // --- FUNÇÃO ZOOM ---
+    function abrirZoom(src){
+        document.getElementById("zoomImg").src = src;
+        document.getElementById("zoomView").style.display = "flex";
+    }
+
+    // --- ENVIO PARA WHATSAPP ---
     const form = document.getElementById("finForm");
-// --- CARREGAR DETALHES E IMAGENS DA MOTO ---
-// IMPORTANTE: Você precisa me enviar suas motos para eu deixar isso automático!
-
-// Pega o nome da moto da URL
-const params = new URLSearchParams(window.location.search);
-const motoNome = params.get("moto") || "";
-
-// Busca a moto no array de motos
-const motoData = motos.find(m => m.nome === motoNome || m.id === motoNome);
-
-// Se encontrar, define 3 imagens iguais para o carrossel
-let imagensMoto = [];
-if (motoData) {
-    imagensMoto = [motoData.img, motoData.img, motoData.img];
-} else {
-    // fallback caso não encontre a moto
-    imagensMoto = ["https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp"];
-}
-
-// Coloca no carrossel
-let track = document.getElementById("carouselTrack"); // seu container do carrossel
-if(track){
-    track.innerHTML = imagensMoto.map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`).join("");
-}
-
-// Atualiza o nome e preço da moto
-document.getElementById("motoNome").innerText = motoData.nome;
-document.getElementById("motoPreco").innerText = motoData.precoAvista;
-
-
-// coloca o nome
-document.getElementById("tituloMoto").innerText = moto;
-
-
-
-// carrossel infinito real
-let track = document.getElementById("carouselTrack");
-
-// duplicar imagens para criar loop infinito real
-let imgsLoop = [...imagensMoto, ...imagensMoto];
-
-track.innerHTML = imgsLoop
-    .map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`)
-    .join("");
-
-// função de zoom
-function abrirZoom(src){
-    document.getElementById("zoomImg").src = src;
-    document.getElementById("zoomView").style.display = "flex";
-}
-
-
     form.addEventListener("submit", function(e){
         e.preventDefault();
-
         const fd = new FormData(form);
         const data = Object.fromEntries(fd.entries());
-
         const msg = 
 `*INFORMAÇÕES NECESSÁRIAS PARA PRÉ-ANÁLISE*
-
 *Moto:* ${data.moto}
 *Nome:* ${data.nome}
 *CPF:* ${data.cpf}
@@ -286,11 +232,9 @@ function abrirZoom(src){
 *Tipo:* ${data.tipo}
 *Habilitação:* ${data.habilitacao}
 *Entrada:* R$ ${data.entrada || "0"}`;
-
-      const zap = "5594992781498";
-const url = `https://wa.me/${zap}?text=${encodeURIComponent(msg)}`;
-window.location.href = url;
-
+        const zap = "5594992781498";
+        const url = `https://wa.me/${zap}?text=${encodeURIComponent(msg)}`;
+        window.location.href = url;
     });
 </script>
 
