@@ -186,8 +186,8 @@
 <script>
     // --- LISTA DE MOTOS ---
    const motos = [
-  { id:'BIZ125ES', nome:'BIZ 125 ES', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
-  { id:'BIZ125EX', nome:'BIZ 125 EX', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
+  { id:'BIZ125ES', nome:'BIZ 125 ES', img1:'https://image2url.com/images/1765575169305-e0fcee91-8ef7-420d-a27d-09890063953d.png', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
+  { id:'BIZ125EX', nome:'BIZ 125 EX', img1:'https://image2url.com/images/1765575169305-e0fcee91-8ef7-420d-a27d-09890063953d.png', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
   { id:'CG160START', nome:'CG 160 START', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
   { id:'CG160FAN', nome:'CG 160 FAN', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
   { id:'CG160TITAN', nome:'CG 160 TITAN', img1:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp', img2:'https://via.placeholder.com/480x220', img3:'https://via.placeholder.com/480x220' },
@@ -215,27 +215,33 @@
 
 
 
-    // --- PEGAR MOTO DA URL ---
-    const params = new URLSearchParams(window.location.search);
-    const motoId = params.get("moto") || "BIZ125ES"; // padrão se não tiver
+    // --- PEGA MOTO ESCOLHIDA NA URL ---
+const params = new URLSearchParams(window.location.search);
+const motoId = params.get("moto") || null;
 
-    const motoSelecionada = motos.find(m => m.id === motoId) || motos[0];
+// encontra a moto correta
+const motoSelecionada = motos.find(m => m.id === motoId) || motos[0];
 
-    // --- ATUALIZA HTML ---
-    document.getElementById("tituloMoto").innerText = motoSelecionada.nome;
-    document.getElementById("motoEscolhida").innerText = motoSelecionada.nome;
-    document.getElementById("motoInput").value = motoSelecionada.nome;
+// atualiza título e formulário
+document.getElementById("tituloMoto").innerText = motoSelecionada.nome;
+document.getElementById("motoEscolhida").innerText = motoSelecionada.nome;
+document.getElementById("motoInput").value = motoSelecionada.nome;
 
-    // --- CRIA CARROSSEL ---
-    const track = document.getElementById("carouselTrack");
-    const imgsLoop = [motoSelecionada.img, motoSelecionada.img, motoSelecionada.img, motoSelecionada.img];
-    track.innerHTML = imgsLoop.map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`).join("");
+// --- CRIA IMAGENS DO CARROSSEL ---
+// usa img1, img2, img3 do objeto da moto
+let imagensMoto = [motoSelecionada.img1, motoSelecionada.img2, motoSelecionada.img3];
+let track = document.getElementById("carouselTrack");
 
-    // --- FUNÇÃO ZOOM ---
-    function abrirZoom(src){
-        document.getElementById("zoomImg").src = src;
-        document.getElementById("zoomView").style.display = "flex";
-    }
+// repetir as imagens para animação infinita
+let imgsLoop = [...imagensMoto, ...imagensMoto];
+
+track.innerHTML = imgsLoop.map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`).join("");
+
+// --- FUNÇÃO ZOOM ---
+function abrirZoom(src){
+    document.getElementById("zoomImg").src = src;
+    document.getElementById("zoomView").style.display = "flex";
+}
 
     // --- ENVIO WHATSAPP ---
     const form = document.getElementById("finForm");
