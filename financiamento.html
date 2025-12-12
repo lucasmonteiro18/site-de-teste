@@ -93,6 +93,48 @@
 </head>
 
 <body>
+<div class="card">
+    <h2 id="tituloMoto">Carregando...</h2>
+
+    <!-- CARROSSEL -->
+    <div class="carousel">
+        <div class="carousel-track" id="carouselTrack">
+            <!-- imagens entram aqui via JS -->
+        </div>
+    </div>
+
+    <p id="detalhesMoto" style="margin-top:15px; font-size:15px; line-height:1.5; color:#444;">
+        Carregando detalhes...
+    </p>
+</div>
+
+<style>
+.carousel {
+    width:100%;
+    height:220px;
+    overflow:hidden;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+    margin-bottom:15px;
+}
+.carousel-track {
+    display:flex;
+    width:100%;
+    height:100%;
+    animation: slide 12s infinite;
+}
+.carousel-track img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+@keyframes slide {
+    0% { transform:translateX(0); }
+    33% { transform:translateX(-100%); }
+    66% { transform:translateX(-200%); }
+    100% { transform:translateX(0); }
+}
+</style>
 
 <div class="card">
     <h2>Simulação de Financiamento</h2>
@@ -147,6 +189,34 @@
     document.getElementById("motoInput").value = moto;
 
     const form = document.getElementById("finForm");
+// --- CARREGAR DETALHES E IMAGENS DA MOTO ---
+// IMPORTANTE: Você precisa me enviar suas motos para eu deixar isso automático!
+
+// imagens temporárias só para demonstração
+let imagensMoto = [
+    "https://i.imgur.com/0Zf9aQq.jpeg",
+    "https://i.imgur.com/ZmY0yZV.jpeg",
+    "https://i.imgur.com/3hx8S9X.jpeg"
+];
+
+// detalhes temporários
+let detalhesTexto = `
+• Motor: 125cc  
+• Câmbio: Semi-automático  
+• Consumo médio: 40km/L  
+• Painel 100% digital  
+• Freios CBS  
+`;
+
+// coloca o nome
+document.getElementById("tituloMoto").innerText = moto;
+
+// coloca detalhes
+document.getElementById("detalhesMoto").innerHTML = detalhesTexto.replace(/\n/g, "<br>");
+
+// coloca fotos
+let track = document.getElementById("carouselTrack");
+track.innerHTML = imagensMoto.map(src => `<img src="${src}">`).join("");
 
     form.addEventListener("submit", function(e){
         e.preventDefault();
