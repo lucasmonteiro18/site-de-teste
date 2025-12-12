@@ -96,17 +96,16 @@
 <div class="card">
     <h2 id="tituloMoto">Carregando...</h2>
 
-    <!-- CARROSSEL -->
-    <div class="carousel">
-        <div class="carousel-track" id="carouselTrack">
-            <!-- imagens entram aqui via JS -->
-        </div>
-    </div>
-
-    <p id="detalhesMoto" style="margin-top:15px; font-size:15px; line-height:1.5; color:#444;">
-        Carregando detalhes...
-    </p>
+   <!-- CARROSSEL NOVO -->
+<div class="carousel">
+    <div class="carousel-track" id="carouselTrack"></div>
 </div>
+
+<!-- ZOOM VIEW -->
+<div id="zoomView" onclick="this.style.display='none'">
+    <img id="zoomImg">
+</div>
+ 
 
 <style>
 .carousel {
@@ -114,27 +113,55 @@
     height:220px;
     overflow:hidden;
     border-radius:12px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.15);
     margin-bottom:15px;
+    position:relative;
 }
+
 .carousel-track {
     display:flex;
-    width:100%;
-    height:100%;
-    animation: slide 12s infinite;
+    width:max-content;
+    animation: scroll 18s linear infinite;
 }
+
 .carousel-track img {
     width:100%;
-    height:100%;
+    height:220px;
     object-fit:cover;
+    cursor: pointer;
+    transition:.3s;
 }
-@keyframes slide {
-    0% { transform:translateX(0); }
-    33% { transform:translateX(-100%); }
-    66% { transform:translateX(-200%); }
-    100% { transform:translateX(0); }
+
+.carousel-track img:hover {
+    transform:scale(1.03);
+}
+
+/* loop infinito real */
+@keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* fundo escuro do zoom */
+#zoomView {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+#zoomView img {
+    width:90%;
+    max-width:480px;
+    border-radius:12px;
 }
 </style>
+
 
 <div class="card">
     <h2>Simulação de Financiamento</h2>
@@ -194,29 +221,34 @@
 
 // imagens temporárias só para demonstração
 let imagensMoto = [
-    "https://i.imgur.com/0Zf9aQq.jpeg",
-    "https://i.imgur.com/ZmY0yZV.jpeg",
-    "https://i.imgur.com/3hx8S9X.jpeg"
+    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-frontal-da-lateral-direita-da-honda-cg-160-fan.webp",
+    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-cg-160-fan.webp",
+    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-traseira-da-lateral-direita-da-honda-cg-160-fan_0.webp"
+    
 ];
 
-// detalhes temporários
-let detalhesTexto = `
-• Motor: 125cc  
-• Câmbio: Semi-automático  
-• Consumo médio: 40km/L  
-• Painel 100% digital  
-• Freios CBS  
-`;
 
 // coloca o nome
 document.getElementById("tituloMoto").innerText = moto;
 
-// coloca detalhes
-document.getElementById("detalhesMoto").innerHTML = detalhesTexto.replace(/\n/g, "<br>");
 
-// coloca fotos
+
+// carrossel infinito real
 let track = document.getElementById("carouselTrack");
-track.innerHTML = imagensMoto.map(src => `<img src="${src}">`).join("");
+
+// duplicar imagens para criar loop infinito real
+let imgsLoop = [...imagensMoto, ...imagensMoto];
+
+track.innerHTML = imgsLoop
+    .map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`)
+    .join("");
+
+// função de zoom
+function abrirZoom(src){
+    document.getElementById("zoomImg").src = src;
+    document.getElementById("zoomView").style.display = "flex";
+}
+
 
     form.addEventListener("submit", function(e){
         e.preventDefault();
