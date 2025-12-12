@@ -219,13 +219,31 @@
 // --- CARREGAR DETALHES E IMAGENS DA MOTO ---
 // IMPORTANTE: Você precisa me enviar suas motos para eu deixar isso automático!
 
-// imagens temporárias só para demonstração
-let imagensMoto = [
-    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-frontal-da-lateral-direita-da-honda-cg-160-fan.webp",
-    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-cg-160-fan.webp",
-    "https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-traseira-da-lateral-direita-da-honda-cg-160-fan_0.webp"
-    
-];
+// Pega o nome da moto da URL
+const params = new URLSearchParams(window.location.search);
+const motoNome = params.get("moto") || "";
+
+// Busca a moto no array de motos
+const motoData = motos.find(m => m.nome === motoNome || m.id === motoNome);
+
+// Se encontrar, define 3 imagens iguais para o carrossel
+let imagensMoto = [];
+if (motoData) {
+    imagensMoto = [motoData.img, motoData.img, motoData.img];
+} else {
+    // fallback caso não encontre a moto
+    imagensMoto = ["https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp"];
+}
+
+// Coloca no carrossel
+let track = document.getElementById("carouselTrack"); // seu container do carrossel
+if(track){
+    track.innerHTML = imagensMoto.map(src => `<img src="${src}" onclick="abrirZoom('${src}')">`).join("");
+}
+
+// Atualiza o nome e preço da moto
+document.getElementById("motoNome").innerText = motoData.nome;
+document.getElementById("motoPreco").innerText = motoData.precoAvista;
 
 
 // coloca o nome
