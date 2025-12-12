@@ -237,11 +237,10 @@ track.innerHTML = imagensMoto.map(src => `<img src="${src}">`).join("");
 *Habilitação:* ${data.habilitacao}
 *Entrada:* R$ ${data.entrada || "0"}`;
 
-        const zap = "5594992781498"; 
-  // <-- SEU NÚMERO
-        const url = `https://wa.me/${zap}?text=${encodeURIComponent(msg)}`;
+      const zap = "5594992781498";
+const url = `https://wa.me/${zap}?text=${encodeURIComponent(msg)}`;
+window.location.href = url;
 
-        window.location.href = url;
     });
 </script>
 
