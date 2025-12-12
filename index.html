@@ -413,8 +413,11 @@ function renderMotoGrid(){
         <h3 class="moto-title">${m.nome}</h3>
         <p class="moto-meta">Ano: ${m.ano} • Preço à vista: <strong>${m.precoAvista || '-'}</strong></p>
         <div class="actions">
-          <a class="btn btn-red" href="#fin-${idx}" data-action="fin">Financiamento</a>
-          <a class="btn btn-black" href="#cons-${idx}" data-action="cons">Consórcio</a>
+          <a class="btn btn-red" href="financiamento.html?moto=${idx}" data-action="fin">Financiamento</a>
+
+
+          <a class="btn btn-black" href="consorcio.html?moto=${idx}" data-action="cons">Consórcio</a>
+
         </div>
       </div>`;
     div.addEventListener('click', (e)=>{
