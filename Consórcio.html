@@ -49,14 +49,15 @@ button{width:100%;padding:14px;background:#c8102e;border:none;margin-top:20px;bo
       <option>Não</option>
     </select>
 
-    <label>Valor de parcela ideal *</label>
-    <select name="parcelaIdeal" required>
-      <option value="" disabled selected>Escolha</option>
-      <option>Até R$ 300</option>
-      <option>R$ 300 a R$ 500</option>
-      <option>R$ 500 a R$ 800</option>
-      <option>Acima de R$ 800</option>
-    </select>
+    <label>Valor de parcela ideal (R$) *</label>
+<input 
+  type="number" 
+  name="parcelaIdeal" 
+  placeholder="Ex: 450"
+  min="1"
+  step="0.01"
+  required
+>
 
     <input type="hidden" name="moto" id="motoInput">
     <button>Enviar consórcio no WhatsApp</button>
