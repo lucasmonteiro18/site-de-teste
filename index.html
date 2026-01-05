@@ -1,228 +1,231 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Honda Revemar — Simulador</title>
-<style>
-:root{--red:#c8102e;--black:#0b0b0b;--white:#ffffff}
-*{box-sizing:border-box}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#f7f7f7;color:var(--black)}
-header{background:var(--black);color:var(--white);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
-.header-brand{display:flex;gap:12px;align-items:center}
-.logo{width:46px;height:46px;border-radius:6px;background:linear-gradient(135deg,var(--red),#7a0710);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
-nav a{color:#fff;text-decoration:none;margin-left:12px;font-weight:600}
-.container{max-width:1100px;margin:18px auto;padding:0 16px}
-.hero{background:linear-gradient(90deg,rgba(200,16,46,0.06),rgba(0,0,0,0.02));border-radius:10px;padding:18px;display:flex;gap:16px;align-items:center;justify-content:space-between}
-.hero h1{margin:0;color:var(--black)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}
-.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(11,11,11,0.06);cursor:pointer}
-.card img{width:100%;height:160px;object-fit:cover;display:block}
-.card-body{padding:12px}
-.moto-title{font-weight:700;margin:0 0 6px 0}
-.moto-meta{font-size:13px;color:#666;margin:0}
-.actions{display:flex;gap:8px;margin-top:10px}
-.btn{display:inline-block;padding:10px 12px;border-radius:8px;text-decoration:none;text-align:center;font-weight:700}
-.btn-red{background:var(--red);color:#fff}
-.btn-black{background:var(--black);color:#fff}
-.table{background:#fff;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(11,11,11,0.04);margin-top:14px;overflow:auto}
-table{width:100%;border-collapse:collapse}
-th,td{border-bottom:1px solid #eee;padding:10px;text-align:left;white-space:nowrap}
-th{background:#111;color:#fff}
-.form-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 8px 20px rgba(11,11,11,0.06)}
-label{display:block;font-size:13px;margin-bottom:6px}
-input,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-bottom:10px}
-button{background:var(--red);color:#fff;border:none;cursor:pointer;font-weight:700}
-.fix-whatsapp{position:fixed;right:18px;bottom:18px;background:#25D366;color:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,0.2);font-size:22px}
-.footer{padding:18px;text-align:center;color:#666;margin-top:20px}
-@media(min-width:900px){.hero{padding:28px}}
-.small{font-size:13px;color:#777}
-.edit-note{background:#fff3f3;border-left:4px solid var(--red);padding:10px;border-radius:6px;margin-top:12px}
-</style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Honda Revemar — Corporate Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --honda-red: #cc0000;
+            --premium-black: #0f0f0f;
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --border-gold: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            background: var(--premium-black);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* FUNDO COM FOGOS DESFOCADOS */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            filter: blur(60px); /* Efeito Bokeh Profissional */
+            opacity: 0.5;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo-honda { width: 150px; transition: 0.3s; }
+
+        /* AREA DO TEMA (BANNER PRINCIPAL) */
+        .hero-section {
+            padding: 60px 5%;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(204, 0, 0, 0.2) 0%, transparent 70%);
+        }
+
+        .hero-title { font-weight: 900; font-size: 3.5rem; text-transform: uppercase; margin-bottom: 10px; }
+        .hero-subtitle { font-size: 1.2rem; color: #ccc; letter-spacing: 2px; }
+
+        /* GRID DE MOTOS */
+        .moto-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            padding: 40px 20px;
+        }
+
+        /* MOLDURA PROFISSIONAL */
+        .moto-card {
+            background: #fff;
+            border-radius: 4px;
+            position: relative;
+            padding: 2px; /* Espaço para a borda animada */
+            background: var(--border-gold);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .moto-card:hover { transform: translateY(-10px); }
+
+        .card-inner {
+            background: #fff; /* Fundo interno sempre branco */
+            border-radius: 2px;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* PLACA METÁLICA ANO */
+        .year-tag {
+            position: absolute;
+            top: 15px; left: 15px;
+            background: linear-gradient(135deg, #333, #000);
+            color: #d4af37;
+            padding: 5px 15px;
+            font-weight: 900;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid #d4af37;
+        }
+
+        /* ENFEITES PENDURADOS (TEMA) */
+        .enfeite {
+            position: absolute;
+            top: -5px; right: 30px;
+            z-index: 30;
+            transform-origin: top center;
+            animation: balanco 3s ease-in-out infinite;
+        }
+
+        @keyframes balanco {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        /* PALCO DA MOTO */
+        .stage {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, #fff 50%, #f0f0f0 100%);
+            overflow: hidden;
+        }
+
+        .moto-img {
+            width: 80%;
+            z-index: 10;
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2));
+            transition: transform 0.5s ease;
+        }
+
+        /* ANIMAÇÃO DE ACELERAÇÃO REALISTA */
+        .pneu-mark {
+            position: absolute;
+            bottom: 60px; left: 50%;
+            height: 8px; width: 0;
+            background: rgba(0,0,0,0.8);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            filter: blur(3px);
+            z-index: 5;
+        }
+
+        .accelerating {
+            animation: hondaRun 2.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+        }
+
+        @keyframes hondaRun {
+            0% { transform: translateX(0) scale(1) rotate(0deg); }
+            10% { transform: translateX(-15px) scale(1.02) rotate(-5deg); } /* Empinada de torque */
+            40% { transform: translateX(600px) scale(0.9) rotate(2deg); }
+            41% { opacity: 0; transform: translateX(-600px); }
+            100% { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .card-info { padding: 25px; color: #333; }
+        .moto-name { font-weight: 700; font-size: 1.4rem; margin: 0; text-transform: uppercase; }
+        .moto-price { color: var(--honda-red); font-size: 1.2rem; font-weight: 700; margin: 10px 0; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .btn-simular {
+            flex: 1; padding: 12px; border: none; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; border-radius: 4px; transition: 0.3s;
+            text-decoration: none; text-align: center;
+        }
+        .btn-fin { background: var(--honda-red); color: #fff; }
+        .btn-cons { background: #000; color: #fff; }
+        .btn-simular:hover { opacity: 0.8; letter-spacing: 1px; }
+
+        /* FOOTER E WHATSAPP */
+        .footer { padding: 40px; text-align: center; opacity: 0.6; }
+        .whatsapp-fix {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #25d366; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 2000;
+        }
+
+    </style>
 </head>
-<body style="
-    background-image: url('https://image2url.com/images/1764879214240-2524e4d2-f096-4bbe-964f-c477b46eea5b.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-">
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
 <header>
-  <div class="header-brand">
-    <div class="logo">HONDA</div>
-    <div>
-      <div style="font-weight:800">Honda Revemar</div>
-      <div style="font-size:13px;color:#ddd">Financiamento • Consórcio • Atendimento Rápido</div>
-    </div>
-  </div>
-  <nav>
-    <a href="#home">Início</a>
-    <a href="#tabela">Tabelas</a>
-    <a href="#contato">Contato</a>
-  </nav>
+    <img src="https://logodownload.org/wp-content/uploads/2014/04/honda-logo-1.png" class="logo-honda" alt="Honda">
+    <nav style="display: flex; gap: 30px;">
+        <a href="#" style="color: #fff; text-decoration: none; font-weight: 700;">MODELOS</a>
+        <a href="#tabela" style="color: #fff; text-decoration: none; font-weight: 700;">TABELAS</a>
+        <a href="#" style="color: var(--honda-red); text-decoration: none; font-weight: 900;">CONTATO</a>
+    </nav>
 </header>
 
-<main class="container" id="app">
-  <section class="hero" id="home" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px;">
+<main>
+    <section class="hero-section">
+        <h1 class="hero-title" id="campanha-titulo">--</h1>
+        <p class="hero-subtitle" id="campanha-sub">--</p>
+    </section>
 
-    <div style="max-width: 420px; width: 100%;">
-
-      <h1 style="
-        color: #ffffff;
-        font-size: clamp(26px, 5vw, 34px);
-        line-height: 1.2;
-        font-weight: 700;
-        white-space: normal;
-        word-break: keep-all;
-        margin: 0;
-      ">
-        Encontre sua próxima Honda
-      </h1>
-
-      <h1 class="small" style="
-        color: #ffd700;
-        font-size: clamp(18px, 4vw, 24px);
-        line-height: 1.3;
-        font-weight: 600;
-        white-space: normal;
-        word-break: keep-all;
-        margin: 8px 0 0 0;
-      ">
-        Escolha o modelo e simule financiamento<br>
-        ou consórcio em segundos.
-      </h1>
-
-    </div>
-
-    <div style="max-width: 380px; width: 100%;">
-      <img 
-        src="https://image2url.com/images/1764878470670-38480b82-6ad8-411f-959c-d4e2acd16018.png" 
-        alt="Honda Revemar" 
-        style="width: 100%; height: auto; border-radius: 8px; display: block;"
-      />
-    </div>
-
-  </section>
+    <div class="moto-container" id="motoGrid">
+        </div>
 </main>
 
+<div class="footer">
+    © <span id="year"></span> Honda Revemar - Todos os direitos reservados.
+</div>
 
-  <section>
-    <div class="grid" id="motoGrid" aria-live="polite"></div>
-  </section>
-
-  <section id="page" style="margin-top:18px"></section>
-
-  <section id="tabela"></section>
-
-  <section id="contato" style="margin-top:20px">
-    <div class="form-card">
-      <h3>Contato</h3>
-      <p class="small">Atendimento via WhatsApp</p>
-      <p><strong>📞</strong> 94 99278-1498 (WhatsApp)</p>
-    </div>
-  </section>
-
-  <div class="footer">© <span id="year"></span> Honda Revemar</div>
-</main>
-
-<!-- BOTÃO ORIGINAL OBRIGATÓRIO PARA O SISTEMA (ESCONDIDO POR CSS) -->
-<a class="fix-whatsapp" id="whatsFAB" href="#" title="Falar no WhatsApp"></a>
-
-
-<!-- SEU BOTÃO PERSONALIZADO -->
-<a class="fix-whatsapp" id="vendedorFAB"
-   href="https://agent.vendedoria.acelerabit.com/site-vendedor?vendedor_image=https://image2url.com/images/1763321623834-3529dfca-89a1-481c-9b53-be3324834b67.jpg&vendedor_name=Lucas Honda&vendedor_whatsapp=559492781498&vendedor_id=9115&vendedor_concessionaria=REVEMAR&region_id=1"
-   title="Fale comigo">
-
-    <img src="https://image2url.com/images/1764879551788-2d56589a-f1b1-4506-9e52-71257960bced.jpeg"
-         alt="Lucas Foto" class="lucas-foto">
-
-    <i class="bi bi-whatsapp"></i>
+<a href="https://wa.me/5594992781498" class="whatsapp-fix">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35">
 </a>
 
-<div class="online-text">🟢 Estou online</div>
-
-<style>
-    /* ESCONDE APENAS O BOTÃO ORIGINAL, SEM REMOVER DO CÓDIGO */
-    #whatsFAB {
-        opacity: 0 !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
-        pointer-events: none !important;
-        position: absolute !important;
-    }
-
-    /* BOTÃO PERSONALIZADO */
-    #vendedorFAB {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #25D366;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        color: white;
-        font-size: 28px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        overflow: hidden;
-        animation: float 2s ease-in-out infinite;
-        z-index: 999;
-    }
-
-    .lucas-foto {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-
-    #vendedorFAB i {
-        position: relative;
-        z-index: 2;
-    }
-
-    .online-text {
-        position: fixed;
-        right: 90px;
-        bottom: 35px;
-        background: #fff;
-        color: #25D366;
-        padding: 6px 12px;
-        border-radius: 10px;
-        font-size: 14px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        font-weight: bold;
-        animation: float 2s ease-in-out infinite;
-        z-index: 998;
-    }
-
-    @keyframes float {
-        0%   { transform: translateY(0); }
-        50%  { transform: translateY(-6px); }
-        100% { transform: translateY(0); }
-    }
-</style>
-
-
-
 <script>
-/* ===== DADOS EDITÁVEIS ===== */
-const DATA = {
-  whatsappNumber: '5594992781498',
+/* ============================================================
+   ÁREA TEMÁTICA - MUDE AQUI PARA ALTERAR O TEMA DO SITE TODO
+   ============================================================ */
+const THEME_CONFIG = {
+    nome: "Ano Novo 2026",
+    titulo: "Feliz Ano Novo Honda",
+    subtitulo: "Acelere para um novo começo com taxas exclusivas",
+    enfeiteIcone: "https://cdn-icons-png.flaticon.com/512/2357/2357931.png", // Imagem do penduricalho
+    corPrimaria: "#cc0000",
+    bgLogo: "URL_DA_LOGO_CAMPANHA_SE_HOUVER"
+};
 
-  // Mantive precoAvista onde existia (não necessário pro consórcio),
-  // mas o consórcio agora tem valores próprios em `parcelas`.
-  motos: [
+const MOTOS_DATA = [
     { id:'BIZ125ES', nome:'BIZ 125 ES', ano:2026, precoAvista:'R$ 20.149',
   bonus:'R$ 4.166',
   img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp',
@@ -372,312 +375,110 @@ const DATA = {
   img:'https://www.motopel.com.br/site/wp-content/uploads/2020/02/capa-africa-twin-mt.webp',
   parcelas:{72:1022.90}
 }
-,
-   
-  ]
-};
+];
 
-/* ===== UTILIDADES ===== */
-function el(q){return document.querySelector(q)}
-function elAll(q){return Array.from(document.querySelectorAll(q))}
+/* ============================================================
+   LÓGICA DO SISTEMA (NÃO MEXER SE NÃO FOR PROFISSIONAL)
+   ============================================================ */
 
-function formatCurrency(n){
-  if(n===null || n===undefined || n==='-' || n===0) {
-    if(n===0) return 'R$ 0,00';
-    return '-';
-  }
-  return 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+function initTheme() {
+    document.getElementById('campanha-titulo').innerText = THEME_CONFIG.titulo;
+    document.getElementById('campanha-sub').innerText = THEME_CONFIG.subtitulo;
+    document.getElementById('year').innerText = new Date().getFullYear();
+    renderMotos();
+    initFireworks();
 }
 
-/* Retorna array ordenado de prazos únicos presentes nas motos */
-function getAllPrazos(){
-  const set = new Set();
-  DATA.motos.forEach(m=>{
-    if(m.parcelas){
-      Object.keys(m.parcelas).forEach(k=> set.add(Number(k)));
-    }
-  });
-  // ordena numericamente ascend
-  return Array.from(set).sort((a,b)=>a-b);
-}
-
-/* RENDERIZAÇÃO GRID */
-function renderMotoGrid(){
-  const grid = el('#motoGrid'); grid.innerHTML='';
-  DATA.motos.forEach((m, idx)=>{
-    const div = document.createElement('div'); div.className='card';
-    div.innerHTML = `
-      <img src="${m.img}" alt="${m.nome}">
-      <div class="card-body">
-        <h3 class="moto-title">${m.nome}</h3>
-        <p class="moto-meta">Ano: ${m.ano} • Preço à vista: <strong>${m.precoAvista || '-'}</strong></p>
-        <div class="actions">
-      <a 
-  class="btn btn-red"
-  href="financiamento.html?moto=${m.id}"
-  onclick="event.stopPropagation()">
-  Financiamento
-</a>
-
-
-
-
-
-
-       <a
-  href="Consórcio.html?moto=${m.id}"
-  class="btn btn-black"
-  onclick="event.stopPropagation()">
-  Consórcio
-</a>
-
-
-
-
+function renderMotos() {
+    const grid = document.getElementById('motoGrid');
+    grid.innerHTML = MOTOS_DATA.map(m => `
+        <div class="moto-card">
+            <div class="year-tag">2026</div>
+            <img src="${THEME_CONFIG.enfeiteIcone}" class="enfeite" width="50">
+            <div class="card-inner">
+                <div class="stage" onclick="hondaAnimation(this)">
+                    <div class="pneu-mark"></div>
+                    <img src="${m.img}" class="moto-img">
+                </div>
+                <div class="card-info">
+                    <h2 class="moto-name">${m.nome}</h2>
+                    <p class="moto-price">${m.preco}</p>
+                    <div class="btn-group">
+                        <a href="financiamento.html?id=${m.id}" class="btn-simular btn-fin">Financiamento</a>
+                        <a href="consorcio.html?id=${m.id}" class="btn-simular btn-cons">Consórcio</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>`;
-    div.addEventListener('click', (e)=>{
-      const a = e.target.closest('a');
-      const action = a ? a.getAttribute('data-action') : 'fin';
-      location.hash = (action === 'cons') ? `#cons-${idx}` : `#fin-${idx}`;
-      setTimeout(()=>{ const page = el('#page'); if(page) page.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
-    });
-    grid.appendChild(div);
-  });
+    `).join('');
 }
 
-/* RENDER DE TABELAS - usa prazos dinâmicos */
-function renderTabelas(){
-  const sec = el('#tabela');
-  const prazos = getAllPrazos();
-  sec.innerHTML = `
-    <div class="table">
-      <h3>Tabela de Consórcio — valores oficiais</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Modelo</th>
-            ${prazos.map(p=>`<th>${p}m</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${DATA.motos.map(m=>{
-            const row = prazos.map(p=>{
-              return `<td>${(m.parcelas && m.parcelas[p]) ? formatCurrency(m.parcelas[p]) : '-'}</td>`;
-            }).join('');
-            return `<tr><td>${m.nome}</td>${row}</tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-      <p class="small">Valores de consórcio conforme tabela oficial. Preço à vista é informação separada e não é usada no cálculo das parcelas de consórcio.</p>
-    </div>
-  `;
-}
-
-/* ROTEADOR */
-function router(){
-  const page = location.hash.replace('#','');
-  const container = el('#page');
-  if(!page || page.startsWith('home')){ container.innerHTML=''; return }
-
-  if(page.startsWith('fin-')){ const idx = Number(page.split('-')[1]); renderFinanciamento(idx); return }
-  if(page.startsWith('cons-')){ const idx = Number(page.split('-')[1]); renderConsorcio(idx); return }
-}
-
-/* PÁGINA DA MOTO (simples) */
-function renderMotoPage(idx){
-  const m = DATA.motos[idx];
-  const c = el('#page');
-  c.innerHTML = `
-    <div class="card">
-      <img src="${m.img}" alt="${m.nome}">
-      <div class="card-body">
-        <h2>${m.nome}</h2>
-        <p class="small">Ano: ${m.ano} • Preço à vista: <strong>${m.precoAvista || '-'}</strong></p>
-      </div>
-    </div>`;
-}
-
-/* FINANCIAMENTO */
-function renderFinanciamento(idx){
-  const m = DATA.motos[idx];
-  const c = el('#page');
-  c.innerHTML = `
-    <div class="card">
-      <img src="${m.img}" alt="${m.nome}">
-      <div class="card-body">
-        <h2>${m.nome}</h2>
-        
-       
-
-       
-
-      </div>
-    </div>
-  
-
-    <div class="form-card" id="finCard" style="margin-top:12px">
-      
-    </div>
-  `;
-
-  const form = el('#finForm');
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    const fd = new FormData(form);
-    const data = Object.fromEntries(fd.entries());
-    const msg = `Olá! Tenho interesse em simular *financiamento* da moto ${data.moto}.
-*Nome:* ${data.nome}
-*CPF:* ${data.cpf}
-*Data de nascimento:* ${data.nascimento}
-*WhatsApp:* ${data.whatsapp}
-*Trabalho:* ${data.trabalho}
-*Renda:* R$ ${data.renda}
-*Habilitação:* ${data.habilitacao}
-*Entrada:* R$ ${data.entrada || '0'}`;
-    openWhatsapp(DATA.whatsappNumber, msg);
-  });
-
-  setTimeout(()=>{ el('#finCard').scrollIntoView({behavior:'smooth', block:'start'}) }, 80);
-}
-
-/* CONSÓRCIO (agora usa valores próprios por moto) */
-function renderConsorcio(idx){
-  const m = DATA.motos[idx];
-  const c = el('#page');
-
-  // monta lista de prazos disponíveis apenas para essa moto
-  const prazosMoto = m.parcelas ? Object.keys(m.parcelas).map(Number).sort((a,b)=>a-b) : [];
-
-  c.innerHTML = `
-    <div class="card">
-      <img src="${m.img}" alt="${m.nome}">
-      <div class="card-body">
-        <h2>${m.nome}</h2>
-        <p class="small">Ano: ${m.ano} • Preço à vista: <strong>${m.precoAvista || '-'}</strong></p>
-        <div style="margin-top:12px">
-          <h4>Consórcio — Prazos e valores</h4>
-          <table>
-            <thead><tr><th>Parcelas</th><th>Valor da parcela</th></tr></thead>
-            <tbody>
-              ${prazosMoto.map(p=>`<tr><td>${p} meses</td><td>${formatCurrency(m.parcelas[p])}</td></tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-card" id="consCard" style="margin-top:12px">
-      <h3>Simular Consórcio — ${m.nome}</h3>
-      <form id="consForm">
-        <label>Nome completo *</label>
-<input name="nome" required placeholder="Seu nome completo">
-
-<label>CPF *</label>
-<input name="cpf" required placeholder="000.000.000-00">
-
-<label>Data de nascimento *</label>
-<input name="nascimento" type="date" required>
-
-<label>Você tem pressa para retirar a moto? *</label>
-<select name="pressa" required>
-  <option value="" disabled selected>Selecione...</option>
-  <option value="Sim">Sim</option>
-  <option value="Não">Não</option>
-</select>
-
-<label>Escolha o prazo desejado *</label>
-<select name="prazo" id="prazoSelect" required>
-  <option value="" disabled selected>Selecione o prazo...</option>
-  ${prazosMoto.map(p=>{
-    return `<option value="${p}">${p} meses — ${formatCurrency(m.parcelas[p])}</option>`;
-  }).join('')}
-</select>
-
-<label>Qual valor de parcela fica bom para você por mês? (R$) *</label>
-<input name="valorParcela" type="number" min="0" required placeholder="Ex: 400">
-
-<input name="moto" value="${m.nome}" readonly style="border:0;background:transparent;font-weight:700;margin-bottom:10px">
-
-<button type="submit">Enviar simulação para WhatsApp</button>
-</form>
-
-<div id="consResumo" class="small" style="margin-top:8px">Selecione um prazo para ver o valor da parcela.</div>
-
-
-  `;
-
-  const form = el('#consForm');
-  const prazoSelect = el('#prazoSelect');
-  const resumo = el('#consResumo');
-
-  // atualizar resumo ao mudar prazo - mostra valor oficial
-  prazoSelect.addEventListener('change', ()=>{
-    const p = Number(prazoSelect.value);
-    const valor = m.parcelas && m.parcelas[p] ? m.parcelas[p] : null;
-    resumo.textContent = valor ? `Prazo: ${p} meses — Parcela: ${formatCurrency(valor)}.` : 'Prazo selecionado sem valor oficial.';
-  });
-
-  // dispara uma vez para mostrar valor inicial
-  prazoSelect.dispatchEvent(new Event('change'));
-
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    const fd = new FormData(form);
-    const data = Object.fromEntries(fd.entries());
-    const msg = `Olá! Tenho interesse em *consórcio* da moto ${data.moto}.
-*Nome:* ${data.nome}
-*CPF:* ${data.cpf}
-*Data de nascimento:* ${data.nascimento}
-*Tem pressa?* ${data.pressa}
-*Prazo escolhido:* ${data.prazo} meses
-*Parcela ideal informada pelo cliente:* R$ ${data.valorParcela}`;
-    openWhatsapp(DATA.whatsappNumber, msg);
-  });
-
-  setTimeout(()=>{ el('#consCard').scrollIntoView({behavior:'smooth', block:'start'}) }, 80);
-}
-
-/* Abre WhatsApp com mensagem preformatada */
-function openWhatsapp(number, message){
-  const cleaned = String(number).replace(/[^0-9]/g,'');
-  const url = `https://wa.me/${cleaned}?text=` + encodeURIComponent(message);
-  window.open(url, '_blank');
-}
-
-/* Botão fixo WhatsApp */
-function setupWhatsFAB(){
-  const btn = el('#whatsFAB');
-  btn.href = `https://wa.me/${DATA.whatsappNumber}`;
-  btn.addEventListener('click',(e)=>{ e.preventDefault(); const msg = 'Olá! Gostaria de informações sobre as motos e simulação.'; openWhatsapp(DATA.whatsappNumber, msg); });
-}
-
-/* Inicialização */
-function init(){
-  document.getElementById('year').textContent = new Date().getFullYear();
-  renderMotoGrid(); renderTabelas(); setupWhatsFAB(); router();
-  window.addEventListener('hashchange', router);
-}
-
-init();
-</script>
-
-<!-- SCRIPT PARA DETECTAR PC OU CELULAR -->
-<script>
-    if (window.innerWidth <= 768) {
-        // CELULAR
-        document.getElementById("whatsFAB").style.bottom = "20px";
-        document.getElementById("whatsFAB").style.right = "20px";
-    } else {
-        // PC
-        document.getElementById("whatsFAB").style.bottom = "40px";
-        document.getElementById("whatsFAB").style.right = "40px";
-    }
-</script>
-
-<a class="fix-whatsapp" id="whatsFAB" href="#" title="Falar no WhatsApp">💬</a>
-
+function hondaAnimation(stage) {
+    const img = stage.querySelector('.moto-img');
+    const mark = stage.querySelector('.pneu-mark');
     
+    if(img.classList.contains('accelerating')) return;
+
+    // Efeito de fumaça fictícia e marca de pneu
+    mark.style.width = "180px";
+    mark.style.transition = "width 0.4s ease";
+    
+    img.classList.add('accelerating');
+    
+    setTimeout(() => {
+        img.classList.remove('accelerating');
+        mark.style.width = "0";
+    }, 2500);
+}
+
+// LÓGICA DE FOGOS DE ARTIFÍCIO NO BACKGROUND (DESFOCADOS)
+function initFireworks() {
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 100;
+            this.size = Math.random() * 5 + 2;
+            this.speedY = Math.random() * 3 + 2;
+            this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }
+        update() {
+            this.y -= this.speedY;
+            if (this.y < -100) this.y = canvas.height + 100;
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+initTheme();
+</script>
+
 </body>
 </html>
-
